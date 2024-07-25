@@ -27,15 +27,18 @@ import {
 import { Input } from './ui/input';
 
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
-  password: z.string().min(2),
+  nama_barang: z.string().min(2).max(50),
+  jumlah_barang: z.coerce.number().min(1),
+  harga_barang: z.coerce.number().min(100),
 });
 
 const AddItem = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      nama_barang: '',
+      jumlah_barang: 0,
+      harga_barang: 0,
     },
   });
 
@@ -48,7 +51,7 @@ const AddItem = () => {
     <Dialog>
       <DialogTrigger>
         <div className="bg-black rounded-md p-4 text-white">
-          <PlusIcon />1
+          <PlusIcon />
         </div>
       </DialogTrigger>
       <DialogContent>
@@ -60,30 +63,47 @@ const AddItem = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="nama_barang"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Nama Barang</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Input nama barang" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="password"
+              name="jumlah_barang"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Jumlah Barang</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input
+                      placeholder="Input jumlah barang"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>This is your password</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="harga_barang"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Harga Barang</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Input jumlah barang"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
