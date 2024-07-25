@@ -48,7 +48,7 @@ const AddItem = () => {
     <Dialog>
       <DialogTrigger>
         <div className="bg-black rounded-md p-4 text-white">
-          <PlusIcon />
+          <PlusIcon />1
         </div>
       </DialogTrigger>
       <DialogContent>
