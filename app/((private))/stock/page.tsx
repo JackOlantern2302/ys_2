@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import React from 'react';
 import { columns } from './columns';
 import AddItem from '@/components/AddItem';
+import EditStock from '@/components/EditStock';
 
 const stock = async () => {
   const supabase = createClient();
@@ -18,7 +19,10 @@ const stock = async () => {
     <div className="flex flex-col px-12 pt-8 gap-8">
       <div className="flex justify-between">
         <h1 className="text-3xl font-semibold">Stock</h1>
-        <AddItem />
+        <div className="flex items-center gap-4">
+          <AddItem />
+          <EditStock />
+        </div>
       </div>
       <DataTable columns={columns} data={stock} />
     </div>
