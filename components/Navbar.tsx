@@ -19,6 +19,12 @@ const Navbar = () => {
         >
           New Order
         </Link>
+        <Link
+          href={'/profile'}
+          className="bg-yellow-400 px-4 py-2 rounded-md hover:scale-[1.03] transition-all"
+        >
+          Profile
+        </Link>
       </div>
     </div>
   );
