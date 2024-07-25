@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from './ui/form';
 import { Input } from './ui/input';
+import { createClient } from '@/utils/supabase/client';
 
 const formSchema = z.object({
   nama_barang: z.string().min(2).max(50),
@@ -33,6 +34,7 @@ const formSchema = z.object({
 });
 
 const AddItem = () => {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,13 +44,24 @@ const AddItem = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const supabase = createClient();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { error } = await supabase.from('stock').insert({
+      nama_barang: values.nama_barang,
+      jumlah_barang: values.jumlah_barang,
+      harga_barang: values.harga_barang,
+    });
+
+    if (error) {
+      console.error('Error tambah stock', error.message);
+    }
+
+    setOpen(false);
+    console.log('Success');
+  };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div className="bg-black rounded-md p-4 text-white">
           <PlusIcon />
