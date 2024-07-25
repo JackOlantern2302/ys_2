@@ -12,7 +12,9 @@ const Navbar = async () => {
 
   return (
     <div className="flex py-4 px-16 justify-between items-center border shadow-lg">
-      <Image src={'/Logo.png'} alt="Logo" width={44} height={44} />
+      <Link href={'/'}>
+        <Image src={'/Logo.png'} alt="Logo" width={44} height={44} />
+      </Link>
       <div className="flex items-center gap-4">
         <Link href={'/stock'} className="hover:font-bold transition-all">
           Stock
