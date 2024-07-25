@@ -28,6 +28,7 @@ import { Input } from './ui/input';
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
+  password: z.string().min(2),
 });
 
 const AddItem = () => {
@@ -41,7 +42,7 @@ const AddItem = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values.username);
+    console.log(values);
   }
   return (
     <Dialog>
@@ -69,6 +70,20 @@ const AddItem = () => {
                   <FormDescription>
                     This is your public display name.
                   </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormDescription>This is your password</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
