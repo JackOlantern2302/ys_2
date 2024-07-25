@@ -1,5 +1,3 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
