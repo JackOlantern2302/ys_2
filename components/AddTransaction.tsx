@@ -32,17 +32,21 @@ const formSchema = z.object({
   tanggal: z.date({
     required_error: 'Wajib ada tanggal transaksi.',
   }),
-  nama_barang: z.coerce.number().min(1),
+  id_barang: z.coerce.number().min(1),
   kuantitas: z.coerce.number().min(1),
 });
 
-const AddTransaction = () => {
+const AddTransaction = ({
+  namaBarang,
+}: {
+  namaBarang: { value: number; label: string }[];
+}) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       tanggal: undefined,
-      nama_barang: 0,
+      id_barang: 0,
       kuantitas: undefined,
     },
   });
@@ -52,13 +56,14 @@ const AddTransaction = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { error } = await supabase.from('transaction').insert({
       tanggal_transaksi: values.tanggal,
-      id_barang: values.nama_barang,
+      id_barang: values.id_barang,
       kuantitas: values.kuantitas,
     });
 
     if (error) {
       console.error('Error tambah transaksi', error.message);
     }
+    form.reset();
 
     setOpen(false);
     console.log('Success');
@@ -90,12 +95,25 @@ const AddTransaction = () => {
             />
             <FormField
               control={form.control}
-              name="nama_barang"
+              name="id_barang"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col gap-1">
                   <FormLabel>Nama Barang</FormLabel>
                   <FormControl>
-                    <Input placeholder="Input nama barang" {...field} />
+                    <select
+                      className="border rounded-md p-2"
+                      {...field}
+                      defaultValue="default"
+                    >
+                      <option value="default" disabled>
+                        Pilih nama barang
+                      </option>
+                      {namaBarang.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

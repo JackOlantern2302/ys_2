@@ -23,12 +23,14 @@ export default async function Page() {
     })
   );
 
+  const namaBarang = await fetchNamaBarang();
+
   return (
     <div className="flex flex-col px-12 pt-8 gap-8">
       <div className="flex justify-between">
         <h1 className="text-3xl font-semibold">Transaction</h1>
         <div className="flex items-center gap-4">
-          <AddTransaction />
+          <AddTransaction namaBarang={namaBarang} />
         </div>
       </div>
       <DataTable columns={columns} data={processedTransactions} />
