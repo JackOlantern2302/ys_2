@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 
-import { Pencil1Icon, PlusIcon } from '@radix-ui/react-icons';
+import { PlusIcon } from '@radix-ui/react-icons';
 import { Button } from './ui/button';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -72,7 +72,7 @@ const AddTransaction = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div className="bg-black rounded-md p-4 text-white">
-          <Pencil1Icon />
+          <PlusIcon />
         </div>
       </DialogTrigger>
       <DialogContent>
