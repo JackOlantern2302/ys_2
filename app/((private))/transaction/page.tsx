@@ -3,8 +3,6 @@ import { createClient } from '@/utils/supabase/server';
 import { columns, Transaction } from './columns';
 import AddTransaction from '@/components/AddTransaction';
 import { fetchNamaBarang } from '@/lib/fetchNamaBarang';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import TransactionPDF from '@/components/pdf/TransactionPDF';
 import TransactionPDFDownload from '@/components/pdf/TransactionPDFDownload';
 
 export default async function Page() {

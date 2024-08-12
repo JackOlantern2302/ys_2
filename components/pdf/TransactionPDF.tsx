@@ -46,6 +46,9 @@ const TransactionPDF: React.FC<TransactionPDFProps> = ({ transactions }) => (
         <View style={styles.table}>
           <View style={[styles.tableRow, { backgroundColor: '#f2f2f2' }]}>
             <Text style={[styles.tableCol, styles.tableCell]}>ID</Text>
+            <Text style={[styles.tableCol, styles.tableCell]}>
+              Tanggal Transaksi
+            </Text>
             <Text style={[styles.tableCol, styles.tableCell]}>Nama Barang</Text>
             <Text style={[styles.tableCol, styles.tableCell]}>Kuantitas</Text>
             <Text style={[styles.tableCol, styles.tableCell]}>Total Harga</Text>
@@ -54,6 +57,9 @@ const TransactionPDF: React.FC<TransactionPDFProps> = ({ transactions }) => (
             <View style={styles.tableRow} key={transaction.id}>
               <Text style={[styles.tableCol, styles.tableCell]}>
                 {transaction.id}
+              </Text>
+              <Text style={[styles.tableCol, styles.tableCell]}>
+                {transaction.tanggal_transaksi.toString()}
               </Text>
               <Text style={[styles.tableCol, styles.tableCell]}>
                 {transaction.stock.nama_barang}
