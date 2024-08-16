@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { signOut } from '../../((auth))/action/action';
 import Image from 'next/image';
+import { PersonStandingIcon } from 'lucide-react';
 
 export default async function Page() {
   const supabase = createClient();
@@ -13,27 +14,23 @@ export default async function Page() {
   }
 
   return (
-    <div className="flex flex-col shadow py-8 px-12 gap-8 rounded-lg">
+    <div className="flex flex-col shadow py-8 px-12 gap-8 rounded-lg mx-16 my-8">
       <section className="flex gap-16">
         {/* TODO: Make change picture functionality */}
         {/* Profile Picture */}
         <div className="flex rounded-full aspect-square object-cover overflow-hidden max-w-60 bg-slate-100 hover:blur-sm transition-all duration-300">
-          <Image
-            src="/vercel.svg"
-            className="w-full"
-            alt="Profile Picture"
-            width={120}
-            height={120}
-          />
+          <PersonStandingIcon className="size-48" />
         </div>
-        <div className="flex flex-col">
-          <p>Hello {data.user.email}</p>
+        <div className="flex flex-col divide-y-2 divide-yellow-600">
+          <p className="text-2xl">
+            Hello <span className="text-yellow-400">{data.user.email}</span>
+          </p>
         </div>
       </section>
       <section className="flex self-center">
         <form>
           <button
-            className="flex items-center gap-4 text-xl hover:text-red-500 transition-all"
+            className="flex items-center gap-4 text-xl hover:text-red-500 transition-all duration-300"
             formAction={signOut}
           >
             Sign Out

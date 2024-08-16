@@ -22,12 +22,7 @@ const Navbar = async () => {
         <Link href={'/transaction'} className="hover:font-bold transition-all">
           Transaction
         </Link>
-        <Link
-          href={'/new-order'}
-          className="bg-yellow-400 px-4 py-2 rounded-md hover:scale-[1.03] transition-all"
-        >
-          New Order
-        </Link>
+
         {user === null ? (
           <Link
             href={'/login'}

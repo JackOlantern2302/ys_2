@@ -4,6 +4,7 @@ import { columns, Transaction } from './columns';
 import AddTransaction from '@/components/AddTransaction';
 import { fetchNamaBarang } from '@/lib/fetchNamaBarang';
 import TransactionPDFDownload from '@/components/pdf/TransactionPDFDownload';
+import { calcTotalByQuantity } from '@/lib/utils';
 
 export default async function Page() {
   const supabase = createClient();
@@ -17,12 +18,7 @@ export default async function Page() {
     return <div>Error loading activities</div>;
   }
 
-  const processedTransactions: Transaction[] = transactions.map(
-    (transaction) => ({
-      ...transaction,
-      total_harga: transaction.stock.harga_barang * transaction.kuantitas,
-    })
-  );
+  const processedTransactions = calcTotalByQuantity(transactions);
 
   const namaBarang = await fetchNamaBarang();
 

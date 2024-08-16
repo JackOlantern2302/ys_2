@@ -12,6 +12,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Stock } from '../stock/columns';
 import { MoreHorizontal, PencilIcon, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { formatIDR } from '@/lib/utils';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -35,6 +36,7 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'stock.harga_barang',
     header: 'Harga Per Item',
+    cell: ({ row }) => formatIDR.format(row.original.stock.harga_barang),
   },
   {
     accessorKey: 'kuantitas',
@@ -43,6 +45,7 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'total_harga',
     header: 'Total Harga',
+    cell: ({ row }) => formatIDR.format(row.original.total_harga),
   },
   {
     id: 'actions',
