@@ -3,6 +3,7 @@ import { login } from '../action/action';
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 export default function Page() {
   return (
@@ -31,13 +32,14 @@ export default function Page() {
             required
           />
           <div className="flex flex-col text-center">
-            <button
+            <Button
               formAction={login}
               type="submit"
               className={`border border-green-500 hover:bg-green-500 hover:text-white font-semibold rounded-full transition-all duration-300 p-2 my-4`}
+              variant="outline"
             >
               Log in
-            </button>
+            </Button>
             <p className="text-slate-500 my-2">or make a new account</p>
             <Link
               href={'/register'}

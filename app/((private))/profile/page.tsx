@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/utils/supabase/server';
-import { signOut } from '../../((auth))/action/action';
 import Image from 'next/image';
 import { PersonStandingIcon } from 'lucide-react';
+import SignOutForm from '@/components/SignOutForm';
 
 export default async function Page() {
   const supabase = createClient();
@@ -28,15 +28,7 @@ export default async function Page() {
         </div>
       </section>
       <section className="flex self-center">
-        <form>
-          <button
-            className="flex items-center gap-4 text-xl hover:text-red-500 transition-all duration-300"
-            formAction={signOut}
-          >
-            Sign Out
-            <span>{'>'}</span>
-          </button>
-        </form>
+        <SignOutForm />
       </section>
     </div>
   );

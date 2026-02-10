@@ -54,17 +54,49 @@ const AddTransaction = ({
   const supabase = createClient();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { error } = await supabase.from('transaction').insert({
+    // First, get the current stock for the selected item
+    const { data: stockData, error: stockError } = await supabase
+      .from('stock')
+      .select('jumlah_barang')
+      .eq('id', values.id_barang)
+      .single();
+
+    if (stockError) {
+      console.error('Error fetching stock', stockError.message);
+      return;
+    }
+
+    // Check if there's enough stock
+    if (stockData.jumlah_barang < values.kuantitas) {
+      alert('Stock tidak cukup!');
+      return;
+    }
+
+    // Insert the transaction
+    const { error: transactionError } = await supabase.from('transaction').insert({
       tanggal_transaksi: values.tanggal,
       id_barang: values.id_barang,
       kuantitas: values.kuantitas,
     });
 
-    if (error) {
-      console.error('Error tambah transaksi', error.message);
+    if (transactionError) {
+      console.error('Error tambah transaksi', transactionError.message);
+      return;
     }
-    form.reset();
 
+    // Reduce the stock quantity
+    const newJumlahBarang = stockData.jumlah_barang - values.kuantitas;
+    const { error: updateError } = await supabase
+      .from('stock')
+      .update({ jumlah_barang: newJumlahBarang })
+      .eq('id', values.id_barang);
+
+    if (updateError) {
+      console.error('Error updating stock', updateError.message);
+      // Optionally, you might want to rollback the transaction if stock update fails
+    }
+
+    form.reset();
     setOpen(false);
     console.log('Success');
   };

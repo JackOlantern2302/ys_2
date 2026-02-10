@@ -25,7 +25,8 @@ export type Transaction = {
   total_harga: number;
   stock: Stock;
 };
-export const columns: ColumnDef<Transaction>[] = [
+
+export const getColumns = (namaBarang: { value: number; label: string }[], onTransactionUpdated: () => void): ColumnDef<Transaction>[] => [
   {
     accessorKey: 'tanggal_transaksi',
     header: 'Tanggal Transaksi',
@@ -95,7 +96,7 @@ export const columns: ColumnDef<Transaction>[] = [
               alert('Error deleting transaction');
             } else {
               // Refresh the page to reflect the deletion
-              window.location.reload();
+              onTransactionUpdated();
             }
           } catch (error) {
             console.error('Unexpected error during deletion:', error);
@@ -127,8 +128,12 @@ export const columns: ColumnDef<Transaction>[] = [
             <DropdownMenuItem onClick={handleDelete} className="text-red-600">
               <Trash className="mr-2 h-4 w-4" /> Delete
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <PencilIcon className="mr-2 h-4 w-4" /> Edit
+            <DropdownMenuItem asChild>
+              <EditTransaction 
+                transaction={payment} 
+                namaBarang={namaBarang} 
+                onTransactionUpdated={onTransactionUpdated} 
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,18 +1,40 @@
+'use client';
+
 import { DataTable } from '@/components/ui/data-table';
-import { createClient } from '@/utils/supabase/server';
-import React from 'react';
+import { createClient } from '@/utils/supabase/client';
+import React, { useEffect, useState } from 'react';
 import { columns } from './columns';
 import AddItem from '@/components/AddItem';
-import EditStock from '@/components/EditStock';
+import StockPDFDownload from '@/components/StockPDFDownload';
 
-const stock = async () => {
-  const supabase = createClient();
+const stock = () => {
+  const [stockData, setStockData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const { data: stock, error } = await supabase.from('stock').select('*');
+  const fetchData = async () => {
+    const supabase = createClient();
 
-  if (error) {
-    console.error(error);
-    return <div>Error loading activities</div>;
+    const { data: stock, error } = await supabase.from('stock').select('*');
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setStockData(stock || []);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleStockUpdated = () => {
+    fetchData(); // Refresh the data when a stock item is updated or deleted
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -21,10 +43,10 @@ const stock = async () => {
         <h1 className="text-3xl font-semibold">Stock</h1>
         <div className="flex items-center gap-4">
           <AddItem />
-          <EditStock />
+          <StockPDFDownload stockData={stockData} />
         </div>
       </div>
-      <DataTable columns={columns} data={stock} />
+      <DataTable columns={columns(handleStockUpdated)} data={stockData} />
     </div>
   );
 };

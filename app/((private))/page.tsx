@@ -44,8 +44,8 @@ export default async function Home() {
             </CardDescription>
           </CardHeader>
           <CardFooter>
-            <Link href={'/transaction'}>
-              <Button>Create New Transaction</Button>
+            <Link href={'/transaction'} className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap">
+              Create New Transaction
             </Link>
           </CardFooter>
         </Card>

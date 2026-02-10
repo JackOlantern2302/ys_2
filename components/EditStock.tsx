@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 
-import { Pencil1Icon, PlusIcon } from '@radix-ui/react-icons';
+import { Pencil1Icon } from '@radix-ui/react-icons';
 import { Button } from './ui/button';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,7 +18,6 @@ import { z } from 'zod';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,6 +25,7 @@ import {
 } from './ui/form';
 import { Input } from './ui/input';
 import { createClient } from '@/utils/supabase/client';
+import { Stock } from '@/app/((private))/stock/columns';
 
 const formSchema = z.object({
   nama_barang: z.string().min(2).max(50),
@@ -33,14 +33,20 @@ const formSchema = z.object({
   harga_barang: z.coerce.number().min(100),
 });
 
-const EditStock = () => {
+const EditStock = ({
+  stock,
+  onStockUpdated,
+}: {
+  stock: Stock;
+  onStockUpdated: () => void;
+}) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      nama_barang: '',
-      jumlah_barang: 0,
-      harga_barang: 0,
+      nama_barang: stock.nama_barang,
+      jumlah_barang: stock.jumlah_barang,
+      harga_barang: stock.harga_barang,
     },
   });
 
@@ -50,24 +56,29 @@ const EditStock = () => {
     const { data, error } = await supabase
       .from('stock')
       .update({
+        nama_barang: values.nama_barang,
         jumlah_barang: values.jumlah_barang,
         harga_barang: values.harga_barang,
       })
-      .eq('nama_barang', values.nama_barang)
+      .eq('id', stock.id)
       .select();
 
     if (error) {
-      console.error('Error tambah stock', error.message);
+      console.error('Error update stock', error.message);
+      alert('Error updating stock');
+      return;
     }
 
     setOpen(false);
+    onStockUpdated();
     console.log('Success', data);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <div className="bg-black rounded-md p-4 text-white">
-          <Pencil1Icon />
+      <DialogTrigger asChild>
+        <div className="flex items-center w-full cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+          <Pencil1Icon className="mr-2 h-4 w-4" /> Edit
         </div>
       </DialogTrigger>
       <DialogContent>
@@ -115,7 +126,7 @@ const EditStock = () => {
                   <FormLabel>Harga Barang</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Input jumlah barang"
+                      placeholder="Input harga barang"
                       type="number"
                       {...field}
                     />
