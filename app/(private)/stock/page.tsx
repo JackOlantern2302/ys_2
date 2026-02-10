@@ -7,7 +7,7 @@ import { columns } from './columns';
 import AddItem from '@/components/AddItem';
 import StockPDFDownload from '@/components/StockPDFDownload';
 
-const stock = () => {
+const Stock = () => {
   const [stockData, setStockData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,4 +51,4 @@ const stock = () => {
   );
 };
 
-export default stock;
+export default Stock;

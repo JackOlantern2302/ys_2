@@ -3,7 +3,7 @@
 import React from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import StockPDF from './pdf/StockPDF';
-import { Stock } from '@/app/((private))/stock/columns';
+import { Stock } from '@/app/(private)/stock/columns';
 import { Button } from '@/components/ui/button';
 
 interface StockPDFDownloadProps {

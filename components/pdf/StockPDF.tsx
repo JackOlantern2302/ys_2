@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Font,
 } from '@react-pdf/renderer';
-import { Stock } from '@/app/((private))/stock/columns';
+import { Stock } from '@/app/(private)/stock/columns';
 
 // Register a font to be used in the PDF
 // Font.register({
@@ -109,3 +109,4 @@ const StockPDF: React.FC<StockPDFProps> = ({ stockData }) => (
 );
 
 export default StockPDF;
+

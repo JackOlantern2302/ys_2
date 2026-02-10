@@ -1,4 +1,4 @@
-import { Transaction } from '@/app/((private))/transaction/columns';
+import { Transaction } from '@/app/(private)/transaction/columns';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

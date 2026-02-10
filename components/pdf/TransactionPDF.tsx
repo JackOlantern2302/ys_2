@@ -1,7 +1,7 @@
 // components/TransactionPDF.tsx
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { Transaction } from '@/app/((private))/transaction/columns';
+import { Transaction } from '@/app/(private)/transaction/columns';
 
 const styles = StyleSheet.create({
   page: {

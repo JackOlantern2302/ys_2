@@ -4,7 +4,7 @@
 import React from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import TransactionPDF from './TransactionPDF';
-import { Transaction } from '@/app/((private))/transaction/columns';
+import { Transaction } from '@/app/(private)/transaction/columns';
 import { Button } from '@/components/ui/button';
 
 interface TransactionPDFDownloadProps {

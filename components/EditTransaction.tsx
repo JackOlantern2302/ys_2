@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { createClient } from '@/utils/supabase/client';
 import { DatePicker } from '@/components/ui/date-picker';
-import { Transaction } from '@/app/((private))/transaction/columns';
+import { Transaction } from '@/app/(private)/transaction/columns';
 
 const formSchema = z.object({
   tanggal: z.date({

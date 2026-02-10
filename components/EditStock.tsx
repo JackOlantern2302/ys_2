@@ -25,7 +25,7 @@ import {
 } from './ui/form';
 import { Input } from './ui/input';
 import { createClient } from '@/utils/supabase/client';
-import { Stock } from '@/app/((private))/stock/columns';
+import { Stock } from '@/app/(private)/stock/columns';
 
 const formSchema = z.object({
   nama_barang: z.string().min(2).max(50),
@@ -144,3 +144,4 @@ const EditStock = ({
 };
 
 export default EditStock;
+
