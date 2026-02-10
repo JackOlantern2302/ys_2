@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   table: {
-    display: 'table',
     width: 'auto',
     borderStyle: 'solid',
     borderWidth: 1,
