@@ -24,6 +24,10 @@ export type Transaction = {
   kuantitas: number;
   total_harga: number;
   stock: Stock;
+  user_id?: string;
+  profiles?: {
+    display_name: string;
+  };
 };
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -49,12 +53,16 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => formatIDR.format(row.original.total_harga),
   },
   {
+    accessorKey: 'user_id',
+    header: 'User ID',
+  },
+  {
     id: 'actions',
     cell: ({ row }) => {
       const payment = row.original;
 
       const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this transaction?')) {
+        if (window.confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
           try {
             const supabase = await import('@/utils/supabase/client').then(m => m.createClient());
             
@@ -67,7 +75,7 @@ export const columns: ColumnDef<Transaction>[] = [
 
             if (stockError) {
               console.error('Error fetching stock', stockError);
-              alert('Error retrieving stock information');
+              alert('Gagal mengambil informasi stok');
               return;
             }
 
@@ -80,7 +88,7 @@ export const columns: ColumnDef<Transaction>[] = [
 
             if (updateError) {
               console.error('Error updating stock', updateError);
-              alert('Error updating stock');
+              alert('Gagal memperbarui stok');
               return;
             }
 
@@ -92,14 +100,14 @@ export const columns: ColumnDef<Transaction>[] = [
 
             if (deleteError) {
               console.error('Error deleting transaction', deleteError);
-              alert('Error deleting transaction');
+              alert('Gagal menghapus transaksi');
             } else {
               // Refresh the page to reflect the deletion
               window.location.reload();
             }
           } catch (error) {
             console.error('Unexpected error during deletion:', error);
-            alert('An unexpected error occurred');
+            alert('Terjadi kesalahan yang tidak terduga');
           }
         }
       };
@@ -108,12 +116,12 @@ export const columns: ColumnDef<Transaction>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">Buka menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() =>
                 navigator.clipboard.writeText(
@@ -121,14 +129,14 @@ export const columns: ColumnDef<Transaction>[] = [
                 )
               }
             >
-              Copy tanggal transaksi
+              Salin tanggal transaksi
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-              <Trash className="mr-2 h-4 w-4" /> Delete
+              <Trash className="mr-2 h-4 w-4" /> Hapus
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <PencilIcon className="mr-2 h-4 w-4" /> Edit
+              <PencilIcon className="mr-2 h-4 w-4" /> Ubah
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

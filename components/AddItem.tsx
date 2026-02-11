@@ -54,11 +54,11 @@ const AddItem = () => {
     });
 
     if (error) {
-      console.error('Error tambah stock', error.message);
+      console.error('Error tambah stok', error.message);
     }
 
     setOpen(false);
-    console.log('Success');
+    console.log('Berhasil');
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -71,7 +71,7 @@ const AddItem = () => {
         <DialogHeader>
           <DialogTitle>Tambah Barang</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Input Data</DialogDescription>
+        <DialogDescription>Masukkan Data Barang Baru</DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -81,7 +81,7 @@ const AddItem = () => {
                 <FormItem>
                   <FormLabel>Nama Barang</FormLabel>
                   <FormControl>
-                    <Input placeholder="Input nama barang" {...field} />
+                    <Input placeholder="Masukkan nama barang" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,7 +95,7 @@ const AddItem = () => {
                   <FormLabel>Jumlah Barang</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Input jumlah barang"
+                      placeholder="Masukkan jumlah barang"
                       type="number"
                       {...field}
                     />
@@ -112,7 +112,7 @@ const AddItem = () => {
                   <FormLabel>Harga Barang</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Input jumlah barang"
+                      placeholder="Masukkan harga barang"
                       type="number"
                       {...field}
                     />
@@ -121,12 +121,12 @@ const AddItem = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Kirim</Button>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
   );
-};
+}
 
 export default AddItem;

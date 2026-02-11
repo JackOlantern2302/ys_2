@@ -27,7 +27,7 @@ export default function Page() {
           action={handleSubmit}
           className="flex flex-col w-[25vw] border shadow-md rounded-xl gap-2 px-12 py-8"
         >
-          <p className="text-2xl">Login</p>
+          <p className="text-2xl">Masuk</p>
 
           {errorMsg && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative text-sm my-2">
@@ -43,7 +43,7 @@ export default function Page() {
             type="email"
             required
           />
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Kata Sandi:</label>
           <input
             className="border-b focus:outline-none pb-2"
             id="password"
@@ -58,14 +58,14 @@ export default function Page() {
               className={`border border-green-500 hover:bg-green-500 hover:text-white font-semibold rounded-full transition-all duration-300 p-2 my-4`}
               variant="outline"
             >
-              {loading ? 'Logging in...' : 'Log in'}
+              {loading ? 'Masuk...' : 'Masuk'}
             </Button>
-            <p className="text-slate-500 my-2">or make a new account</p>
+            <p className="text-slate-500 my-2">atau buat akun baru</p>
             <Link
               href={'/register'}
               className={`bg-green-500 text-white hover:bg-transparent hover:border hover:border-green-500 hover:text-black font-semibold rounded-full transition-all duration-300 p-2 my-4`}
             >
-              Register
+              Daftar
             </Link>
           </div>
         </form>

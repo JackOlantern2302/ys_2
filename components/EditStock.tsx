@@ -64,28 +64,28 @@ const EditStock = ({
       .select();
 
     if (error) {
-      console.error('Error update stock', error.message);
-      alert('Error updating stock');
+      console.error('Error memperbarui stok', error.message);
+      alert('Gagal memperbarui stok');
       return;
     }
 
     setOpen(false);
     onStockUpdated();
-    console.log('Success', data);
+    console.log('Berhasil', data);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="flex items-center w-full cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-          <Pencil1Icon className="mr-2 h-4 w-4" /> Edit
+          <Pencil1Icon className="mr-2 h-4 w-4" /> Ubah
         </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Ubah Barang</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Ubah Data</DialogDescription>
+        <DialogDescription>Ubah Data Barang</DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -95,7 +95,7 @@ const EditStock = ({
                 <FormItem>
                   <FormLabel>Nama Barang</FormLabel>
                   <FormControl>
-                    <Input placeholder="Input nama barang" {...field} />
+                    <Input placeholder="Masukkan nama barang" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +109,7 @@ const EditStock = ({
                   <FormLabel>Jumlah Barang</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Input jumlah barang"
+                      placeholder="Masukkan jumlah barang"
                       type="number"
                       {...field}
                     />
@@ -126,7 +126,7 @@ const EditStock = ({
                   <FormLabel>Harga Barang</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Input harga barang"
+                      placeholder="Masukkan harga barang"
                       type="number"
                       {...field}
                     />
@@ -135,13 +135,13 @@ const EditStock = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Perbarui</Button>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
   );
-};
+}
 
 export default EditStock;
 

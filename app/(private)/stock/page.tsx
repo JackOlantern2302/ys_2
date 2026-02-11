@@ -34,13 +34,13 @@ const Stock = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Memuat...</div>;
   }
 
   return (
     <div className="flex flex-col px-12 pt-8 gap-8">
       <div className="flex justify-between">
-        <h1 className="text-3xl font-semibold">Stock</h1>
+        <h1 className="text-3xl font-semibold">Stok</h1>
         <div className="flex items-center gap-4">
           <AddItem />
           <StockPDFDownload stockData={stockData} />

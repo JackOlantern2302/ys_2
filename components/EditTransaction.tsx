@@ -77,126 +77,250 @@ const EditTransaction = ({
       })
       .eq('id', transaction.id);
 
-    if (transactionError) {
-      console.error('Error updating transaction', transactionError.message);
-      alert('Error updating transaction');
-      return;
+        if (transactionError) {
+
+          console.error('Error updating transaction', transactionError.message);
+
+          alert('Gagal memperbarui transaksi');
+
+          return;
+
+        }
+
+    
+
+        // Adjust stock based on the difference
+
+        if (quantityDifference !== 0) {
+
+          // Get current stock for the item
+
+          const { data: stockData, error: stockError } = await supabase
+
+            .from('stock')
+
+            .select('jumlah_barang')
+
+            .eq('id', values.id_barang)
+
+            .single();
+
+    
+
+          if (stockError) {
+
+            console.error('Error fetching stock', stockError.message);
+
+            alert('Gagal memperbarui stok');
+
+            return;
+
+          }
+
+    
+
+          // Calculate new stock amount
+
+          // If quantity increased, subtract from stock; if decreased, add back to stock
+
+          const newJumlahBarang = stockData.jumlah_barang - quantityDifference;
+
+          
+
+          // Check if there's enough stock for the new quantity
+
+          if (newJumlahBarang < 0) {
+
+            alert('Stok tidak cukup untuk kuantitas yang diminta');
+
+            return;
+
+          }
+
+          
+
+          // Update the stock
+
+          const { error: updateError } = await supabase
+
+            .from('stock')
+
+            .update({ jumlah_barang: newJumlahBarang })
+
+            .eq('id', values.id_barang);
+
+    
+
+          if (updateError) {
+
+            console.error('Error updating stock', updateError.message);
+
+            alert('Gagal memperbarui stok');
+
+            return;
+
+          }
+
+        }
+
+    
+
+        form.reset();
+
+        setOpen(false);
+
+        onTransactionUpdated(); // Refresh the data
+
+        console.log('Transaksi berhasil diperbarui');
+
+      };
+
+    
+
+      return (
+
+        <Dialog open={open} onOpenChange={setOpen}>
+
+                <DialogTrigger asChild>
+
+                  <div className="flex items-center w-full cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+
+                    <PencilIcon className="mr-2 h-4 w-4" /> Ubah
+
+                  </div>
+
+                </DialogTrigger>
+
+                <DialogContent>
+
+                  <DialogHeader>
+
+                    <DialogTitle>Ubah Transaksi</DialogTitle>
+
+                  </DialogHeader>
+
+          
+
+            <DialogDescription>Perbarui Transaksi</DialogDescription>
+
+            <Form {...form}>
+
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+
+                <FormField
+
+                  control={form.control}
+
+                  name="tanggal"
+
+                  render={({ field }) => (
+
+                    <FormItem className="flex flex-col gap-1">
+
+                      <FormLabel>Tanggal Transaksi</FormLabel>
+
+                      <DatePicker field={field} />
+
+                      <FormMessage />
+
+                    </FormItem>
+
+                  )}
+
+                />
+
+                <FormField
+
+                  control={form.control}
+
+                  name="id_barang"
+
+                  render={({ field }) => (
+
+                    <FormItem className="flex flex-col gap-1">
+
+                      <FormLabel>Nama Barang</FormLabel>
+
+                      <FormControl>
+
+                        <select
+
+                          className="border rounded-md p-2"
+
+                          {...field}
+
+                        >
+
+                          {namaBarang.map((option) => (
+
+                            <option key={option.value} value={option.value}>
+
+                              {option.label}
+
+                            </option>
+
+                          ))}
+
+                        </select>
+
+                      </FormControl>
+
+                      <FormMessage />
+
+                    </FormItem>
+
+                  )}
+
+                />
+
+                <FormField
+
+                  control={form.control}
+
+                  name="kuantitas"
+
+                  render={({ field }) => (
+
+                    <FormItem>
+
+                      <FormLabel>Kuantitas</FormLabel>
+
+                      <FormControl>
+
+                        <Input
+
+                          placeholder="Input kuantitas"
+
+                          type="number"
+
+                          {...field}
+
+                        />
+
+                      </FormControl>
+
+                      <FormMessage />
+
+                    </FormItem>
+
+                  )}
+
+                />
+
+                <Button type="submit">Perbarui</Button>
+
+              </form>
+
+            </Form>
+
+          </DialogContent>
+
+        </Dialog>
+
+      );
+
     }
 
-    // Adjust stock based on the difference
-    if (quantityDifference !== 0) {
-      // Get current stock for the item
-      const { data: stockData, error: stockError } = await supabase
-        .from('stock')
-        .select('jumlah_barang')
-        .eq('id', values.id_barang)
-        .single();
-
-      if (stockError) {
-        console.error('Error fetching stock', stockError.message);
-        alert('Error updating stock');
-        return;
-      }
-
-      // Calculate new stock amount
-      // If quantity increased, subtract from stock; if decreased, add back to stock
-      const newJumlahBarang = stockData.jumlah_barang - quantityDifference;
-      
-      // Check if there's enough stock for the new quantity
-      if (newJumlahBarang < 0) {
-        alert('Not enough stock available for the requested quantity');
-        return;
-      }
-      
-      // Update the stock
-      const { error: updateError } = await supabase
-        .from('stock')
-        .update({ jumlah_barang: newJumlahBarang })
-        .eq('id', values.id_barang);
-
-      if (updateError) {
-        console.error('Error updating stock', updateError.message);
-        alert('Error updating stock');
-        return;
-      }
-    }
-
-    form.reset();
-    setOpen(false);
-    onTransactionUpdated(); // Refresh the data
-    console.log('Transaction updated successfully');
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <div className="flex items-center w-full cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-          <PencilIcon className="mr-2 h-4 w-4" /> Edit
-        </div>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit Transaksi</DialogTitle>
-        </DialogHeader>
-        <DialogDescription>Edit Transaksi</DialogDescription>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="tanggal"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-1">
-                  <FormLabel>Tanggal Transaksi</FormLabel>
-                  <DatePicker field={field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="id_barang"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-1">
-                  <FormLabel>Nama Barang</FormLabel>
-                  <FormControl>
-                    <select
-                      className="border rounded-md p-2"
-                      {...field}
-                    >
-                      {namaBarang.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="kuantitas"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Kuantitas</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Input kuantitas"
-                      type="number"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Update</Button>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
-};
+    ;
 
 export default EditTransaction;

@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
     borderBottomStyle: 'solid',
   },
   tableCol: {
-    width: '25%',
+    width: '16.6%',
     padding: 5,
   },
   tableCell: {
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 
@@ -42,7 +42,7 @@ const TransactionPDF: React.FC<TransactionPDFProps> = ({ transactions }) => (
   <Document>
     <Page style={styles.page}>
       <View style={styles.section}>
-        <Text style={styles.header}>Transaction Report</Text>
+        <Text style={styles.header}>Laporan Transaksi</Text>
         <View style={styles.table}>
           <View style={[styles.tableRow, { backgroundColor: '#f2f2f2' }]}>
             <Text style={[styles.tableCol, styles.tableCell]}>ID</Text>
@@ -52,6 +52,7 @@ const TransactionPDF: React.FC<TransactionPDFProps> = ({ transactions }) => (
             <Text style={[styles.tableCol, styles.tableCell]}>Nama Barang</Text>
             <Text style={[styles.tableCol, styles.tableCell]}>Kuantitas</Text>
             <Text style={[styles.tableCol, styles.tableCell]}>Total Harga</Text>
+            <Text style={[styles.tableCol, styles.tableCell]}>Oleh</Text>
           </View>
           {transactions.map((transaction) => (
             <View style={styles.tableRow} key={transaction.id}>
@@ -59,7 +60,7 @@ const TransactionPDF: React.FC<TransactionPDFProps> = ({ transactions }) => (
                 {transaction.id}
               </Text>
               <Text style={[styles.tableCol, styles.tableCell]}>
-                {transaction.tanggal_transaksi.toString()}
+                {new Date(transaction.tanggal_transaksi).toLocaleDateString()}
               </Text>
               <Text style={[styles.tableCol, styles.tableCell]}>
                 {transaction.stock.nama_barang}
@@ -69,6 +70,9 @@ const TransactionPDF: React.FC<TransactionPDFProps> = ({ transactions }) => (
               </Text>
               <Text style={[styles.tableCol, styles.tableCell]}>
                 {transaction.total_harga}
+              </Text>
+              <Text style={[styles.tableCol, styles.tableCell]}>
+                {transaction.user_id || '-'}
               </Text>
             </View>
           ))}

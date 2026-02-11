@@ -23,7 +23,7 @@ export default async function Home() {
 
   if (error) {
     console.error(error);
-    return <div>Error loading activities</div>;
+    return <div>Gagal memuat aktivitas</div>;
   }
 
   const transactions = calcTotalByQuantity(transaction);
@@ -38,14 +38,14 @@ export default async function Home() {
       <div id="left-section" className="col-span-2 space-y-6">
         <Card className="sm:col-span-2">
           <CardHeader className="pb-3">
-            <CardTitle>Add New Transaction</CardTitle>
+            <CardTitle>Tambah Transaksi Baru</CardTitle>
             <CardDescription className="max-w-lg text-balance leading-relaxed">
-              Introducing Our Dynamic Orders Dashboard for Seamless Management.
+              Memperkenalkan Dasbor Pesanan Dinamis Kami untuk Manajemen yang Mulus.
             </CardDescription>
           </CardHeader>
           <CardFooter>
             <Link href={'/transaction'} className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap">
-              Create New Transaction
+              Buat Transaksi Baru
             </Link>
           </CardFooter>
         </Card>
@@ -55,13 +55,13 @@ export default async function Home() {
       </div>
       <div id="right-section" className="col-span-1 space-y-6">
         <ProgressCard
-          title={'Last 7 Days'}
+          title={'7 Hari Terakhir'}
           amount={totalHargaLast7Days}
           content={''}
           progress={last7DaysPercentage}
         />
         <ProgressCard
-          title={'Last 30 Days'}
+          title={'30 Hari Terakhir'}
           amount={totalHargaLast30Days}
           content={''}
           progress={last30DaysPercentage}

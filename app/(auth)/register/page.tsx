@@ -12,7 +12,7 @@ export default function Page() {
           action={signup}
           className="flex flex-col w-[25vw] border shadow-md rounded-xl gap-2 px-12 py-8"
         >
-          <p className="text-2xl">Register</p>
+          <p className="text-2xl">Daftar</p>
           <label htmlFor="email">Email:</label>
           <input
             className="border-b focus:outline-none pb-2"
@@ -21,7 +21,7 @@ export default function Page() {
             type="email"
             required
           />
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Kata Sandi:</label>
           <input
             className="border-b focus:outline-none pb-2"
             id="password"
@@ -36,14 +36,14 @@ export default function Page() {
               className={`border border-green-500 hover:bg-green-500 hover:text-white font-semibold rounded-full transition-all duration-300 p-2 my-4`}
               variant="outline"
             >
-              Register
+              Daftar
             </Button>
-            <p className="text-slate-500 my-2">or login to your account</p>
+            <p className="text-slate-500 my-2">atau masuk ke akun Anda</p>
             <Link
               href={'/login'}
               className={`bg-green-500 text-white hover:bg-transparent hover:border hover:border-green-500 hover:text-black font-semibold rounded-full transition-all duration-300 p-2 my-4`}
             >
-              Log in
+              Masuk
             </Link>
           </div>
         </form>

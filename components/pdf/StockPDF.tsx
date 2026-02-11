@@ -70,7 +70,7 @@ interface StockPDFProps {
 const StockPDF: React.FC<StockPDFProps> = ({ stockData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={styles.title}>Stock Report</Text>
+      <Text style={styles.title}>Laporan Stok</Text>
       <View style={styles.table}>
         <View style={styles.tableRow}>
           <View style={styles.tableColHeader}>

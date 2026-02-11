@@ -18,10 +18,10 @@ const Navbar = async () => {
       </Link>
       <div className="flex items-center gap-4">
         <Link href={'/stock'} className="hover:font-bold transition-all">
-          Stock
+          Stok
         </Link>
         <Link href={'/transaction'} className="hover:font-bold transition-all">
-          Transaction
+          Transaksi
         </Link>
 
         {user === null ? (
@@ -29,14 +29,14 @@ const Navbar = async () => {
             href={'/login'}
             className="bg-yellow-400 px-4 py-2 rounded-md hover:scale-[1.03] transition-all"
           >
-            Login
+            Masuk
           </Link>
         ) : (
           <Link
             href={'/profile'}
             className="bg-yellow-400 px-4 py-2 rounded-md hover:scale-[1.03] transition-all"
           >
-            {user.email}
+            {user.user_metadata?.display_name || user.email}
           </Link>
         )}
       </div>

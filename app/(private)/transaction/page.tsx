@@ -20,8 +20,11 @@ export default function Page() {
 
     const { data: transactionData, error: transactionError } = await supabase
       .from('transaction')
-      .select(`*, stock:id_barang (id, nama_barang, harga_barang)`)
-      .order('created_at', { ascending: false }); // Sort by created_at from newest to oldest
+      .select(`
+        *, 
+        stock:id_barang (id, nama_barang, harga_barang)
+      `)
+      .order('created_at', { ascending: false });
 
     if (transactionError) {
       console.error(transactionError);
@@ -45,13 +48,13 @@ export default function Page() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Memuat...</div>;
   }
 
   return (
     <div className="flex flex-col px-12 pt-8 gap-8">
       <div className="flex justify-between">
-        <h1 className="text-3xl font-semibold">Transaction</h1>
+        <h1 className="text-3xl font-semibold">Transaksi</h1>
         <div className="flex items-center gap-4">
           <AddTransaction namaBarang={namaBarang} />
           <TransactionPDFDownload transactions={transactions} />

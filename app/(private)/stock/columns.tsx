@@ -42,7 +42,7 @@ export const columns: (onStockUpdated: () => void) => ColumnDef<Stock>[] = (onSt
       const stock = row.original;
 
       const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this stock item?')) {
+        if (window.confirm('Apakah Anda yakin ingin menghapus stok ini?')) {
           try {
             const supabase = await import('@/utils/supabase/client').then(m => m.createClient());
 
@@ -54,12 +54,12 @@ export const columns: (onStockUpdated: () => void) => ColumnDef<Stock>[] = (onSt
 
             if (countError) {
               console.error('Error counting transactions', countError);
-              alert('Error checking associated transactions');
+              alert('Gagal memeriksa transaksi terkait');
               return;
             }
 
             if (transactionCount && transactionCount > 0) {
-              alert('Cannot delete stock item that has associated transactions');
+              alert('Tidak dapat menghapus stok yang memiliki transaksi terkait');
               return;
             }
 
@@ -71,13 +71,13 @@ export const columns: (onStockUpdated: () => void) => ColumnDef<Stock>[] = (onSt
 
             if (deleteError) {
               console.error('Error deleting stock', deleteError);
-              alert('Error deleting stock item');
+              alert('Gagal menghapus stok');
             } else {
               onStockUpdated(); // Refresh the data to reflect the deletion
             }
           } catch (error) {
             console.error('Unexpected error during deletion:', error);
-            alert('An unexpected error occurred');
+            alert('Terjadi kesalahan yang tidak terduga');
           }
         }
       };
@@ -86,15 +86,15 @@ export const columns: (onStockUpdated: () => void) => ColumnDef<Stock>[] = (onSt
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">Buka menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-              <Trash className="mr-2 h-4 w-4" /> Delete
+              <Trash className="mr-2 h-4 w-4" /> Hapus
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <EditStock stock={stock} onStockUpdated={onStockUpdated} />

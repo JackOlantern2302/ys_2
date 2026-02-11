@@ -24,11 +24,12 @@ export async function RecentOrder() {
   const { data: recentOrder, error } = await supabase
     .from('transaction')
     .select(`*, stock:id_barang (id, nama_barang, harga_barang)`)
+    .order('created_at', { ascending: false })
     .limit(10);
 
   if (error) {
     console.error(error);
-    return <div>Error loading activities</div>;
+    return <div>Gagal memuat aktivitas</div>;
   }
 
   const processedTransactions = calcTotalByQuantity(recentOrder);
@@ -41,8 +42,8 @@ export async function RecentOrder() {
   return (
     <Card className="w-full">
       <CardHeader className="px-7">
-        <CardTitle>Orders</CardTitle>
-        <CardDescription>Recent orders from your store.</CardDescription>
+        <CardTitle>Pesanan</CardTitle>
+        <CardDescription>Pesanan terbaru dari toko Anda.</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>

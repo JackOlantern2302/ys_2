@@ -7,7 +7,7 @@ export default function SignOutForm() {
   return (
     <form
       onSubmit={(e) => {
-        if (!confirm('Are you sure you want to sign out?')) {
+        if (!confirm('Apakah Anda yakin ingin keluar?')) {
           e.preventDefault();
         }
       }}
@@ -17,7 +17,7 @@ export default function SignOutForm() {
         formAction={signOut}
         variant="ghost"
       >
-        Sign Out
+        Keluar
         <span>{'>'}</span>
       </Button>
     </form>

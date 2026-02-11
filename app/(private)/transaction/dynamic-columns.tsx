@@ -24,6 +24,10 @@ export type Transaction = {
   kuantitas: number;
   total_harga: number;
   stock: Stock;
+  user_id?: string;
+  profiles?: {
+    display_name: string;
+  };
 };
 
 export const getColumns = (namaBarang: { value: number; label: string }[], onTransactionUpdated: () => void): ColumnDef<Transaction>[] => [
@@ -49,95 +53,100 @@ export const getColumns = (namaBarang: { value: number; label: string }[], onTra
     header: 'Total Harga',
     cell: ({ row }) => formatIDR.format(row.original.total_harga),
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this transaction?')) {
-          try {
-            const supabase = await import('@/utils/supabase/client').then(m => m.createClient());
-            
-            // First, we need to restore the stock that was reduced when this transaction was created
-            const { data: stockData, error: stockError } = await supabase
-              .from('stock')
-              .select('jumlah_barang')
-              .eq('id', payment.id_barang)
-              .single();
-
-            if (stockError) {
-              console.error('Error fetching stock', stockError);
-              alert('Error retrieving stock information');
-              return;
-            }
-
-            // Restore the stock by adding back the quantity from this transaction
-            const newJumlahBarang = stockData.jumlah_barang + payment.kuantitas;
-            const { error: updateError } = await supabase
-              .from('stock')
-              .update({ jumlah_barang: newJumlahBarang })
-              .eq('id', payment.id_barang);
-
-            if (updateError) {
-              console.error('Error updating stock', updateError);
-              alert('Error updating stock');
-              return;
-            }
-
-            // Now delete the transaction
-            const { error: deleteError } = await supabase
-              .from('transaction')
-              .delete()
-              .eq('id', payment.id);
-
-            if (deleteError) {
-              console.error('Error deleting transaction', deleteError);
-              alert('Error deleting transaction');
-            } else {
-              // Refresh the page to reflect the deletion
-              onTransactionUpdated();
-            }
-          } catch (error) {
-            console.error('Unexpected error during deletion:', error);
-            alert('An unexpected error occurred');
-          }
-        }
-      };
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  payment.tanggal_transaksi.toString()
-                )
-              }
-            >
-              Copy tanggal transaksi
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-              <Trash className="mr-2 h-4 w-4" /> Delete
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <EditTransaction 
-                transaction={payment} 
-                namaBarang={namaBarang} 
-                onTransactionUpdated={onTransactionUpdated} 
-              />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+    {
+      accessorKey: 'user_id',
+      header: 'ID Pengguna',
     },
-  },
-];
+    {
+      id: 'actions',
+      cell: ({ row }) => {
+        const payment = row.original;
+  
+        const handleDelete = async () => {
+          if (window.confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+            try {
+              const supabase = await import('@/utils/supabase/client').then(m => m.createClient());
+              
+              // First, we need to restore the stock that was reduced when this transaction was created
+              const { data: stockData, error: stockError } = await supabase
+                .from('stock')
+                .select('jumlah_barang')
+                .eq('id', payment.id_barang)
+                .single();
+  
+              if (stockError) {
+                console.error('Error fetching stock', stockError);
+                alert('Gagal mengambil informasi stok');
+                return;
+              }
+  
+              // Restore the stock by adding back the quantity from this transaction
+              const newJumlahBarang = stockData.jumlah_barang + payment.kuantitas;
+              const { error: updateError } = await supabase
+                .from('stock')
+                .update({ jumlah_barang: newJumlahBarang })
+                .eq('id', payment.id_barang);
+  
+              if (updateError) {
+                console.error('Error updating stock', updateError);
+                alert('Gagal memperbarui stok');
+                return;
+              }
+  
+              // Now delete the transaction
+              const { error: deleteError } = await supabase
+                .from('transaction')
+                .delete()
+                .eq('id', payment.id);
+  
+              if (deleteError) {
+                console.error('Error deleting transaction', deleteError);
+                alert('Gagal menghapus transaksi');
+              } else {
+                // Refresh the page to reflect the deletion
+                onTransactionUpdated();
+              }
+            } catch (error) {
+              console.error('Unexpected error during deletion:', error);
+              alert('Terjadi kesalahan yang tidak terduga');
+            }
+          }
+        };
+  
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Buka menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    payment.tanggal_transaksi.toString()
+                  )
+                }
+              >
+                Salin tanggal transaksi
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleDelete} className="text-red-600">
+                <Trash className="mr-2 h-4 w-4" /> Hapus
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <EditTransaction 
+                  transaction={payment} 
+                  namaBarang={namaBarang} 
+                  onTransactionUpdated={onTransactionUpdated} 
+                />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+  
