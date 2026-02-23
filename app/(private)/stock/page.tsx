@@ -42,7 +42,7 @@ const Stock = () => {
       <div className="flex justify-between">
         <h1 className="text-3xl font-semibold">Stok</h1>
         <div className="flex items-center gap-4">
-          <AddItem />
+          <AddItem onSuccess={handleStockUpdated} />
           <StockPDFDownload stockData={stockData} />
         </div>
       </div>

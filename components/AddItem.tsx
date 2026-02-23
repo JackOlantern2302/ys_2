@@ -33,7 +33,7 @@ const formSchema = z.object({
   harga_barang: z.coerce.number().min(100),
 });
 
-const AddItem = () => {
+const AddItem = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,10 +55,12 @@ const AddItem = () => {
 
     if (error) {
       console.error('Error tambah stok', error.message);
+    } else {
+      setOpen(false);
+      form.reset();
+      if (onSuccess) onSuccess();
+      console.log('Berhasil');
     }
-
-    setOpen(false);
-    console.log('Berhasil');
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>

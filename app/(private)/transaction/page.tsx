@@ -56,7 +56,10 @@ export default function Page() {
       <div className="flex justify-between">
         <h1 className="text-3xl font-semibold">Transaksi</h1>
         <div className="flex items-center gap-4">
-          <AddTransaction namaBarang={namaBarang} />
+          <AddTransaction
+            namaBarang={namaBarang}
+            onSuccess={handleTransactionUpdated}
+          />
           <TransactionPDFDownload transactions={transactions} />
         </div>
       </div>
