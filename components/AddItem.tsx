@@ -58,8 +58,12 @@ const AddItem = ({ onSuccess }: { onSuccess?: () => void }) => {
     } else {
       setOpen(false);
       form.reset();
-      if (onSuccess) onSuccess();
-      console.log('Berhasil');
+      
+      // Add a small delay to ensure database consistency before refresh
+      setTimeout(() => {
+        if (onSuccess) onSuccess();
+        console.log('Berhasil');
+      }, 500);
     }
   };
   return (

@@ -111,8 +111,12 @@ const AddTransaction = ({
 
     form.reset();
     setOpen(false);
-    if (onSuccess) onSuccess();
-    console.log('Berhasil');
+    
+    // Add a small delay to ensure database consistency before refresh
+    setTimeout(() => {
+      if (onSuccess) onSuccess();
+      console.log('Berhasil');
+    }, 500);
   };
 
   return (

@@ -6,18 +6,22 @@ import React, { useEffect, useState } from 'react';
 import { columns } from './columns';
 import AddItem from '@/components/AddItem';
 import StockPDFDownload from '@/components/StockPDFDownload';
+import { useRouter } from 'next/navigation';
 
 const Stock = () => {
   const [stockData, setStockData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const fetchData = async () => {
+    setLoading(true);
     const supabase = createClient();
 
     const { data: stock, error } = await supabase.from('stock').select('*');
 
     if (error) {
       console.error(error);
+      setLoading(false);
       return;
     }
 
@@ -29,8 +33,9 @@ const Stock = () => {
     fetchData();
   }, []);
 
-  const handleStockUpdated = () => {
-    fetchData(); // Refresh the data when a stock item is updated or deleted
+  const handleStockUpdated = async () => {
+    router.refresh();
+    await fetchData(); // Refresh the data when a stock item is updated or deleted
   };
 
   if (loading) {

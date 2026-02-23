@@ -9,13 +9,16 @@ import TransactionPDFDownload from '@/components/pdf/TransactionPDFDownload';
 import { calcTotalByQuantity } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { getColumns } from './dynamic-columns';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [namaBarang, setNamaBarang] = useState<{ value: number; label: string }[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const fetchData = async () => {
+    setLoading(true);
     const supabase = createClient();
 
     const { data: transactionData, error: transactionError } = await supabase
@@ -28,6 +31,7 @@ export default function Page() {
 
     if (transactionError) {
       console.error(transactionError);
+      setLoading(false);
       return;
     }
 
@@ -43,8 +47,9 @@ export default function Page() {
     fetchData();
   }, []);
 
-  const handleTransactionUpdated = () => {
-    fetchData(); // Refresh the data when a transaction is updated or deleted
+  const handleTransactionUpdated = async () => {
+    router.refresh();
+    await fetchData(); // Refresh the data when a transaction is updated or deleted
   };
 
   if (loading) {
