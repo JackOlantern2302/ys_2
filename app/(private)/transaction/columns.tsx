@@ -29,7 +29,7 @@ export type Transaction = {
     display_name: string;
   };
 };
-export const columns: ColumnDef<Transaction>[] = [
+export const columns: (onTransactionUpdated: () => void) => ColumnDef<Transaction>[] = (onTransactionUpdated) => [
   {
     accessorKey: 'tanggal_transaksi',
     header: 'Tanggal Transaksi',
@@ -103,7 +103,7 @@ export const columns: ColumnDef<Transaction>[] = [
               alert('Gagal menghapus transaksi');
             } else {
               // Refresh the page to reflect the deletion
-              window.location.reload();
+              onTransactionUpdated();
             }
           } catch (error) {
             console.error('Unexpected error during deletion:', error);
